@@ -77,15 +77,12 @@ $(function() {
          * there is at least a single element within the contianer. 
          */
         beforeEach(function(done) {
-            setTimeout(function() {
-                loadFeed(1, function() {
-                    done();
-                });
-            }, 1);
+            loadFeed(1, done);
         });
 
         it('have at least a single element within the container', function() {
-            var entries = document.querySelectorAll('.entry');
+            let feed = document.querySelector('.feed');
+            let entries = feed.querySelectorAll('.entry');
             expect(entries.length).toBeGreaterThan(0);
         });
     });
@@ -97,22 +94,20 @@ $(function() {
          * This ensure that the content changes when a new feed is loaded by 
          * the loadFeed function. 
          */
-        var prefeed, postfeed;
+        var preFeed, postFeed;
 
         beforeEach(function(done) {
-            setTimeout(function() {
-                loadFeed(1, function() {
-                    var prefeed = document.querySelector('.feed').innerHTML;
-                    loadFeed(2, function() {
-                        var postfeed = document.querySelector('.feed').innerHTML;
-                        done();
-                    });
+            loadFeed(1, function() {
+                preFeed = document.querySelector('.feed').innerHTML;
+                loadFeed(2, function() {
+                    postFeed = document.querySelector('.feed').innerHTML;
+                    done();
                 });
-            }, 1);
+            });
         });
 
         it('changes its contents', function() {
-            expect(prefeed).not.toMatch('postfeed');
+            expect(preFeed).not.toMatch(postFeed);
         });
     });
 }());
